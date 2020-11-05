@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NetPTalk</string>
+    <string name="edit_username_hint">user1</string>
+    <string name="edit_server_host_hint">localhost</string>
+    <string name="edit_server_port_hint">30000</string>
+    <string name="button_login">로그인</string>
 </resources>
