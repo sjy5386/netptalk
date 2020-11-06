@@ -7,28 +7,41 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class Client {
+    private static Client client = new Client();
+
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String host;
-    private int port;
 
-    public Client(String host, int port) {
-        this.host = host;
-        this.port = port;
+    private Client() {
+        socket = null;
     }
 
-    public void connect() {
-        try {
-            socket = new Socket(host, port);
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static Client getInstance() {
+        return client;
+    }
+
+    public void connect(String host, int port) {
+        if (socket != null) {
+            return;
         }
+
+        new Thread(() -> {
+            try {
+                socket = new Socket(host, port);
+                bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void disconnect() {
+        if (socket == null) {
+            return;
+        }
+
         try {
             socket.close();
         } catch (Exception e) {
@@ -57,12 +70,22 @@ public class Client {
             return;
         }
 
-        try {
-            bufferedWriter.write(str);
-            bufferedWriter.newLine();
-            bufferedWriter.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
+        new Thread(() -> {
+            try {
+                bufferedWriter.write(str);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public boolean isConnected() {
+        if (socket == null) {
+            return false;
         }
+
+        return socket.isConnected();
     }
 }
