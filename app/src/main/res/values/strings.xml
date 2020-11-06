@@ -4,4 +4,5 @@
     <string name="edit_server_host_hint">localhost</string>
     <string name="edit_server_port_hint">30000</string>
     <string name="button_login">로그인</string>
+    <string name="button_submit">전송</string>
 </resources>
