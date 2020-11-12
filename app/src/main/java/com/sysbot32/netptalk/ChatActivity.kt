@@ -1,7 +1,7 @@
 package com.sysbot32.netptalk
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.sysbot32.netptalk.databinding.ActivityChatBinding
 
 class ChatActivity : AppCompatActivity() {

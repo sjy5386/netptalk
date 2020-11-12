@@ -1,8 +1,8 @@
 package com.sysbot32.netptalk
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.sysbot32.netptalk.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
