@@ -9,4 +9,5 @@
     <string name="text_server_host">서버 주소</string>
     <string name="text_server_port">포트</string>
     <string name="toast_failed_connect">서버에 연결하지 못했습니다.</string>
+    <string name="menu_logout">로그아웃</string>
 </resources>
