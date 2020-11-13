@@ -5,4 +5,7 @@
     <string name="edit_server_port_hint">30000</string>
     <string name="button_login">로그인</string>
     <string name="button_submit">전송</string>
+    <string name="text_username">이름</string>
+    <string name="text_server_host">서버 주소</string>
+    <string name="text_server_port">포트</string>
 </resources>
