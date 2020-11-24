@@ -46,16 +46,17 @@ class ChatClient(client: Client) {
         client.write(jsonObject.toString())
     }
 
-    fun sendMessage(text: String) {
-        sendMessage(text, "text")
+    fun sendMessage(text: String, chatRoom: String) {
+        sendMessage(text, "text", chatRoom)
     }
 
-    private fun sendMessage(chatType: String, content: String) {
+    private fun sendMessage(chatType: String, content: String, chatRoom: String) {
         val jsonObject: JSONObject = JSONObject()
         jsonObject.put("type", "chat")
         jsonObject.put("username", username)
         jsonObject.put("chatType", chatType)
         jsonObject.put("content", content)
+        jsonObject.put("chatRoom", chatRoom)
         client.write(jsonObject.toString())
     }
 }
