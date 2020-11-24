@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sysbot32.netptalk.databinding.ActivityMainBinding
 
+lateinit var mainActivity: MainActivity
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var client: Client
@@ -19,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mainActivity = this
+
         client = Client.getInstance()
 
         if (!client.isConnected) {
@@ -28,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         val chatRoomAdapter: ChatRoomAdapter = ChatRoomAdapter(this, chatRooms)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = chatRoomAdapter
+
+        createNotificationChannel("default")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

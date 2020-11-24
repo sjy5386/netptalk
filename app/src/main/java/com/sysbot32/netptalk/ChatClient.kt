@@ -34,6 +34,7 @@ class ChatClient(client: Client) {
                 if (chatType == "text") {
                     val content: String = jsonObject.getString("content")
                     val chatMessage: ChatMessage = ChatMessage(username, content)
+                    notifyChatMessage(chatMessage)
                 }
             }
         }
