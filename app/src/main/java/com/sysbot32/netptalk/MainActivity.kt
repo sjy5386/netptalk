@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sysbot32.netptalk.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var client: Client
+    private val chatRooms: MutableList<ChatRoom> =
+        mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +24,10 @@ class MainActivity : AppCompatActivity() {
         if (!client.isConnected) {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+
+        val chatRoomAdapter: ChatRoomAdapter = ChatRoomAdapter(this, chatRooms)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = chatRoomAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
