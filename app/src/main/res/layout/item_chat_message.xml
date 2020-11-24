@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:background="@color/yellow_500"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:padding="4dp"
             app:layout_constraintStart_toEndOf="@+id/imageProfile"

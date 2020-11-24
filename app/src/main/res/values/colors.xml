@@ -13,4 +13,7 @@
     <color name="brown_200">#bcaaa4</color>
     <color name="brown_500">#795548</color>
     <color name="brown_700">#5d4037</color>
+    <color name="blue_200">#90caf9</color>
+    <color name="blue_500">#2196f3</color>
+    <color name="blue_700">#1976d2</color>
 </resources>
