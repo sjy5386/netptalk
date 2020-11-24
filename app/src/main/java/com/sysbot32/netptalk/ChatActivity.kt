@@ -5,12 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sysbot32.netptalk.databinding.ActivityChatBinding
 
-private val chatMap: MutableMap<String, MutableList<ChatMessage>> = mutableMapOf()
+var chatActivity: ChatActivity? = null
 
 class ChatActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityChatBinding
-    private lateinit var chatRoom: String
+    lateinit var binding: ActivityChatBinding
+    lateinit var chatRoom: String
     private lateinit var chatMessages: MutableList<ChatMessage>
+    lateinit var chatMessageAdapter: ChatMessageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,25 +23,24 @@ class ChatActivity : AppCompatActivity() {
             chatRoom = title
             chatMessages = getChatMessages(chatRoom)
 
-            val chatMessageAdapter: ChatMessageAdapter = ChatMessageAdapter(this, chatMessages)
+            chatMessageAdapter = ChatMessageAdapter(this, chatMessages)
             binding.recyclerViewChat.layoutManager = LinearLayoutManager(this)
             binding.recyclerViewChat.adapter = chatMessageAdapter
 
             binding.buttonSubmit.setOnClickListener {
                 val content: String = binding.editTextChat.text.toString()
-                chatClient?.sendMessage(content, chatRoom)
+                if (content != "") {
+                    binding.editTextChat.setText("")
+                    chatClient?.sendMessage(content, chatRoom)
+                }
             }
         } else {
             finish()
         }
     }
-}
 
-fun getChatMessages(chatRoom: String): MutableList<ChatMessage> {
-    var chatMessages = chatMap[chatRoom]
-    if (chatMessages == null) {
-        chatMessages = mutableListOf()
-        chatMap[chatRoom] = chatMessages
+    override fun onResume() {
+        super.onResume()
+        chatActivity = this
     }
-    return chatMessages
 }

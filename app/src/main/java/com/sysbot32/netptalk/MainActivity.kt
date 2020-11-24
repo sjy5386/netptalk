@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sysbot32.netptalk.databinding.ActivityMainBinding
 
 lateinit var mainActivity: MainActivity
-lateinit var chatRoomAdapter: ChatRoomAdapter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var client: Client
+    lateinit var chatRoomAdapter: ChatRoomAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

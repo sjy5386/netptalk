@@ -25,7 +25,7 @@ class ChatRoomAdapter(private val context: Context, private val chatRooms: Mutab
     override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
         val chatRoom: ChatRoom = chatRooms[position]
         holder.binding.textTitle.text = chatRoom.title
-        holder.binding.textTitle.setOnClickListener {
+        holder.binding.chatRoom.setOnClickListener {
             val chatIntent: Intent = Intent(context, ChatActivity::class.java)
             chatIntent.putExtra("title", chatRoom.title)
             context.startActivity(chatIntent)

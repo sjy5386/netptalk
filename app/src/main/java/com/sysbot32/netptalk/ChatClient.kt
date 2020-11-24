@@ -8,6 +8,7 @@ import java.util.concurrent.Executors
 var chatClient: ChatClient? = null
 
 val chatRooms: MutableList<ChatRoom> = mutableListOf()
+private val chatMap: MutableMap<String, MutableList<ChatMessage>> = mutableMapOf()
 
 class ChatClient(client: Client) {
     private val client: Client = client
@@ -36,7 +37,12 @@ class ChatClient(client: Client) {
                 val chatType: String = jsonObject.getString("chatType")
                 val chatMessage: ChatMessage = ChatMessage(jsonObject)
                 if (chatType == "text") {
-                    notifyChatMessage(chatMessage)
+                    val chatMessages: MutableList<ChatMessage> =
+                        getChatMessages(chatMessage.chatRoom)
+                    chatMessages.add(chatMessage)
+                    if ((chatActivity == null) || (chatActivity!!.chatRoom != chatMessage.chatRoom)) {
+                        notifyChatMessage(chatMessage)
+                    }
                 }
             } else if (type == "chatRoom") {
                 if (jsonObject.getString("action") == "add") {
@@ -76,4 +82,13 @@ class ChatClient(client: Client) {
             .put("users", JSONArray().put(username))
         client.write(jsonObject.toString())
     }
+}
+
+fun getChatMessages(chatRoom: String): MutableList<ChatMessage> {
+    var chatMessages = chatMap[chatRoom]
+    if (chatMessages == null) {
+        chatMessages = mutableListOf()
+        chatMap[chatRoom] = chatMessages
+    }
+    return chatMessages
 }
