@@ -1,6 +1,7 @@
 package com.sysbot32.netptalk
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,9 @@ class ChatRoomAdapter(private val context: Context, private val chatRooms: Mutab
         val chatRoom: ChatRoom = chatRooms[position]
         holder.binding.textTitle.text = chatRoom.title
         holder.binding.textTitle.setOnClickListener {
+            val chatIntent: Intent = Intent(context, ChatActivity::class.java)
+            chatIntent.putExtra("title", chatRoom.title)
+            context.startActivity(chatIntent)
         }
     }
 

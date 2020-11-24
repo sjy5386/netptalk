@@ -55,7 +55,7 @@ class ChatClient(client: Client) {
     }
 
     fun sendMessage(text: String, chatRoom: String) {
-        sendMessage(text, "text", chatRoom)
+        sendMessage("text", text, chatRoom)
     }
 
     private fun sendMessage(chatType: String, content: String, chatRoom: String) {
