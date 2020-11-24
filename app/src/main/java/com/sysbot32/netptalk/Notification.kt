@@ -23,7 +23,7 @@ fun createNotificationChannel(channelId: String) {
 fun notifyChatMessage(chatMessage: ChatMessage) {
     val builder: NotificationCompat.Builder =
         NotificationCompat.Builder(mainActivity, "default").setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(chatMessage.username).setContentText(chatMessage.text)
+            .setContentTitle(chatMessage.username).setContentText(chatMessage.content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     NotificationManagerCompat.from(mainActivity).notify(0, builder.build())
 }

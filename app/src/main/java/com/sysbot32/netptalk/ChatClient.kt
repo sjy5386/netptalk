@@ -29,11 +29,9 @@ class ChatClient(client: Client) {
             val jsonObject: JSONObject = JSONObject(received)
             val type: String = jsonObject.getString("type")
             if (type == "chat") {
-                val username: String = jsonObject.getString("username")
                 val chatType: String = jsonObject.getString("chatType")
+                val chatMessage: ChatMessage = ChatMessage(jsonObject)
                 if (chatType == "text") {
-                    val content: String = jsonObject.getString("content")
-                    val chatMessage: ChatMessage = ChatMessage(username, content)
                     notifyChatMessage(chatMessage)
                 }
             }

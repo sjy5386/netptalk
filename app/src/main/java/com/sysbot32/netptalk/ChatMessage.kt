@@ -5,8 +5,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sysbot32.netptalk.databinding.ItemChatMessageBinding
+import org.json.JSONObject
 
-data class ChatMessage(val username: String, val text: String)
+data class ChatMessage(
+    val username: String,
+    val chatType: String,
+    val content: String,
+    val chatRoom: String
+) {
+    constructor(jsonObject: JSONObject) : this(
+        jsonObject.getString("username"),
+        jsonObject.getString("chatType"),
+        jsonObject.getString("content"),
+        jsonObject.getString("chatRoom")
+    )
+}
 
 class ChatMessageViewHolder(val binding: ItemChatMessageBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -26,7 +39,9 @@ class ChatMessageAdapter(
     override fun onBindViewHolder(holder: ChatMessageViewHolder, position: Int) {
         val chatMessage: ChatMessage = chatMessages[position]
         holder.binding.textUsername.text = chatMessage.username
-        holder.binding.textMessage.text = chatMessage.text
+        if (chatMessage.chatType == "text") {
+            holder.binding.textMessage.text = chatMessage.content
+        }
     }
 
     override fun getItemCount(): Int {
