@@ -1,20 +1,22 @@
 package com.sysbot32.netptalk
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sysbot32.netptalk.databinding.ActivityMainBinding
 
 lateinit var mainActivity: MainActivity
+lateinit var chatRoomAdapter: ChatRoomAdapter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var client: Client
-    private val chatRooms: MutableList<ChatRoom> =
-        mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +29,22 @@ class MainActivity : AppCompatActivity() {
 
         if (!client.isConnected) {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
 
-        val chatRoomAdapter: ChatRoomAdapter = ChatRoomAdapter(this, chatRooms)
+        chatRoomAdapter = ChatRoomAdapter(this, chatRooms)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = chatRoomAdapter
+
+        binding.floatingActionButton.setOnClickListener {
+            val editTitle: EditText = EditText(this)
+            AlertDialog.Builder(this).setTitle("채팅방 만들기").setMessage("채팅방 제목 입력")
+                .setView(editTitle)
+                .setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+                    chatClient?.addChatRoom(editTitle.text.toString())
+                }.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
+                }.create().show()
+        }
 
         createNotificationChannel("default")
     }
@@ -46,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             client.disconnect()
             chatClient = null
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
         return super.onOptionsItemSelected(item)
     }

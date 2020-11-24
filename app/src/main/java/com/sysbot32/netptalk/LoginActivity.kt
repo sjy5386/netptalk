@@ -1,5 +1,6 @@
 package com.sysbot32.netptalk
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
@@ -39,7 +40,10 @@ class LoginActivity : AppCompatActivity() {
             val start: Long = System.currentTimeMillis()
             while (!client.isConnected && (System.currentTimeMillis() - start <= 3000));
             if (client.isConnected) {
-                ChatClient(client).login(username)
+                val chatClient: ChatClient = ChatClient(client)
+                chatClient.login(username)
+                chatClient.start()
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
                 Toast.makeText(this, R.string.toast_failed_connect, Toast.LENGTH_SHORT).show()
