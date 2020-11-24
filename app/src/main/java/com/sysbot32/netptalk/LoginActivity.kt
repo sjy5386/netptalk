@@ -39,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
             val start: Long = System.currentTimeMillis()
             while (!client.isConnected && (System.currentTimeMillis() - start <= 3000));
             if (client.isConnected) {
+                ChatClient(client).login(username)
                 finish()
             } else {
                 Toast.makeText(this, R.string.toast_failed_connect, Toast.LENGTH_SHORT).show()

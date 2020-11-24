@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menuLogout) {
             client.disconnect()
+            chatClient = null
             startActivity(Intent(this, LoginActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
