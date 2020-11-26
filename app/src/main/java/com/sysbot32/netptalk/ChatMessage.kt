@@ -1,15 +1,12 @@
 package com.sysbot32.netptalk
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sysbot32.netptalk.databinding.ItemChatMessageBinding
 import org.json.JSONObject
-import java.io.ByteArrayInputStream
 
 private val chatMessagesMap: MutableMap<String, MutableList<ChatMessage>> = mutableMapOf()
 val chatMessageAdapterMap: MutableMap<String, ChatMessageAdapter> = mutableMapOf()
@@ -50,9 +47,7 @@ class ChatMessageAdapter(
             holder.binding.textMessage.text = chatMessage.content
             holder.binding.imageMessage.visibility = View.GONE
         } else if (chatMessage.chatType == "image") {
-            val buf: ByteArray = Base64.decode(chatMessage.content, 0)
-            val byteArrayInputStream = ByteArrayInputStream(buf)
-            val bitmap = BitmapFactory.decodeStream(byteArrayInputStream)
+            val bitmap = base64ToBitmap(chatMessage.content)
             holder.binding.imageMessage.setImageBitmap(bitmap)
             holder.binding.textMessage.visibility = View.GONE
         }
