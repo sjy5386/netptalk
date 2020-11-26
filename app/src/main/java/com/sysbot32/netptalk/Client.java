@@ -88,4 +88,10 @@ public class Client {
 
         return socket.isConnected();
     }
+
+    public boolean waitForConnection(int timeout) {
+        long start = System.currentTimeMillis();
+        while (!client.isConnected() && (System.currentTimeMillis() - start <= timeout)) ;
+        return client.isConnected();
+    }
 }

@@ -25,9 +25,27 @@ class MainActivity : AppCompatActivity() {
 
         mainActivity = this
 
-        client = Client.getInstance()
+        val sharedPreferences = getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE)
+        username = sharedPreferences.getString("username", username).toString()
+        host = sharedPreferences.getString("host", host).toString()
+        port = sharedPreferences.getInt("port", port)
+        val login: Boolean = sharedPreferences.getBoolean("login", false)
 
-        if (!client.isConnected) {
+        if (login) {
+            client = Client.getInstance()
+            client.connect(host, port)
+            if (client.waitForConnection(1000)) {
+                val chatClient = ChatClient(client)
+                chatClient.login(username)
+                chatClient.start()
+            } else {
+                getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
+                    .putBoolean("login", false)
+                    .apply()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+        } else {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
@@ -57,6 +75,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menuLogout) {
+            getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
+                .putBoolean("login", false)
+                .apply()
             client.disconnect()
             chatClient = null
             startActivity(Intent(this, LoginActivity::class.java))
