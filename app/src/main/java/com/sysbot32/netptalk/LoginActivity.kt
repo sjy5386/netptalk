@@ -1,7 +1,6 @@
 package com.sysbot32.netptalk
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +15,20 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE)
-        binding.editTextUserName.setText(sharedPreferences.getString("username", "user1"))
-        binding.editTextServerHost.setText(sharedPreferences.getString("host", "localhost"))
-        binding.editTextServerPort.setText(sharedPreferences.getInt("port", 30000).toString())
+        val sharedPreferences = getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE)
+        binding.editTextUserName.setText(
+            sharedPreferences.getString(
+                "username",
+                getString(R.string.edit_username)
+            )
+        )
+        binding.editTextServerHost.setText(
+            sharedPreferences.getString(
+                "host",
+                getString(R.string.edit_server_host)
+            )
+        )
+        binding.editTextServerPort.setText(sharedPreferences.getInt("port", 30001).toString())
 
         client = Client.getInstance()
 
@@ -29,8 +37,7 @@ class LoginActivity : AppCompatActivity() {
             val host: String = binding.editTextServerHost.text.toString()
             val port: Int = binding.editTextServerPort.text.toString().toInt()
 
-            val editor: SharedPreferences.Editor =
-                getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
+            val editor = getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
             editor.putString("username", username)
             editor.putString("host", host)
             editor.putInt("port", port)
