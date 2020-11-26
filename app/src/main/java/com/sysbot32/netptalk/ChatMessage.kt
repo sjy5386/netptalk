@@ -11,6 +11,9 @@ import com.sysbot32.netptalk.databinding.ItemChatMessageBinding
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
 
+private val chatMessagesMap: MutableMap<String, MutableList<ChatMessage>> = mutableMapOf()
+val chatMessageAdapterMap: MutableMap<String, ChatMessageAdapter> = mutableMapOf()
+
 data class ChatMessage(
     val username: String,
     val chatType: String,
@@ -58,4 +61,13 @@ class ChatMessageAdapter(
     override fun getItemCount(): Int {
         return chatMessages.size
     }
+}
+
+fun getChatMessages(chatRoom: String): MutableList<ChatMessage> {
+    var chatMessages = chatMessagesMap[chatRoom]
+    if (chatMessages == null) {
+        chatMessages = mutableListOf()
+        chatMessagesMap[chatRoom] = chatMessages
+    }
+    return chatMessages
 }

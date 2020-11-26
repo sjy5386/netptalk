@@ -7,9 +7,6 @@ import java.util.concurrent.Executors
 
 var chatClient: ChatClient? = null
 
-val chatRooms: MutableList<ChatRoom> = mutableListOf()
-private val chatMap: MutableMap<String, MutableList<ChatMessage>> = mutableMapOf()
-
 class ChatClient(client: Client) {
     private val client: Client = client
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
@@ -39,13 +36,23 @@ class ChatClient(client: Client) {
                 val chatMessages: MutableList<ChatMessage> =
                     getChatMessages(chatMessage.chatRoom)
                 chatMessages.add(chatMessage)
-                if ((chatActivity == null) || (chatActivity!!.chatRoom != chatMessage.chatRoom)) {
+                val chatMessageAdapter = chatMessageAdapterMap[chatMessage.chatRoom]
+                if ((chatMessageAdapter != null) && (chatActivity.chatRoom == chatMessage.chatRoom)) {
+                    val lastIndex: Int = chatMessages.size - 1
+                    chatActivity.runOnUiThread {
+                        chatMessageAdapter.notifyItemInserted(lastIndex)
+                        chatActivity.binding.recyclerViewChat.scrollToPosition(lastIndex)
+                    }
+                }
+                if ((!chatActivity.status) || (chatActivity.chatRoom != chatMessage.chatRoom)) {
                     notifyChatMessage(chatMessage)
                 }
             } else if (type == "chatRoom") {
                 if (jsonObject.getString("action") == "add") {
                     chatRooms.add(0, ChatRoom(jsonObject.getString("title")))
-                    mainActivity.chatRoomAdapter.notifyItemInserted(0)
+                    mainActivity.runOnUiThread {
+                        mainActivity.chatRoomAdapter.notifyItemInserted(0)
+                    }
                 }
             }
         }
@@ -77,13 +84,4 @@ class ChatClient(client: Client) {
             .put("users", JSONArray().put(username))
         client.write(jsonObject.toString())
     }
-}
-
-fun getChatMessages(chatRoom: String): MutableList<ChatMessage> {
-    var chatMessages = chatMap[chatRoom]
-    if (chatMessages == null) {
-        chatMessages = mutableListOf()
-        chatMap[chatRoom] = chatMessages
-    }
-    return chatMessages
 }

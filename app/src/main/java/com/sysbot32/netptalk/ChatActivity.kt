@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sysbot32.netptalk.databinding.ActivityChatBinding
 import java.io.ByteArrayOutputStream
 
-var chatActivity: ChatActivity? = null
+lateinit var chatActivity: ChatActivity
 
 const val REQUEST_CODE_IMAGE: Int = 105
 
@@ -23,7 +23,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var binding: ActivityChatBinding
     lateinit var chatRoom: String
     private lateinit var chatMessages: MutableList<ChatMessage>
-    lateinit var chatMessageAdapter: ChatMessageAdapter
+    var status: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +35,8 @@ class ChatActivity : AppCompatActivity() {
             chatRoom = title
             chatMessages = getChatMessages(chatRoom)
 
-            chatMessageAdapter = ChatMessageAdapter(this, chatMessages)
             binding.recyclerViewChat.layoutManager = LinearLayoutManager(this)
-            binding.recyclerViewChat.adapter = chatMessageAdapter
+            binding.recyclerViewChat.adapter = getChatMessageAdapter()
 
             binding.buttonSubmit.setOnClickListener {
                 val content: String = binding.editTextChat.text.toString()
@@ -54,6 +53,12 @@ class ChatActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         chatActivity = this
+        status = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        status = false
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -97,5 +102,14 @@ class ChatActivity : AppCompatActivity() {
                 Toast.makeText(this, "이미지를 전송하고 있습니다...", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun getChatMessageAdapter(): ChatMessageAdapter {
+        var chatMessageAdapter = chatMessageAdapterMap[chatRoom]
+        if (chatMessageAdapter == null) {
+            chatMessageAdapter = ChatMessageAdapter(this, chatMessages)
+            chatMessageAdapterMap[chatRoom] = chatMessageAdapter
+        }
+        return chatMessageAdapter
     }
 }

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sysbot32.netptalk.databinding.ItemChatRoomBinding
 
+val chatRooms: MutableList<ChatRoom> = mutableListOf()
+
 data class ChatRoom(val title: String)
 
 class ChatRoomViewHolder(val binding: ItemChatRoomBinding) :
