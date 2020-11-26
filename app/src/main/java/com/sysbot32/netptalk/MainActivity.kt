@@ -31,23 +31,25 @@ class MainActivity : AppCompatActivity() {
         port = sharedPreferences.getInt("port", port)
         val login: Boolean = sharedPreferences.getBoolean("login", false)
 
-        if (login) {
-            client = Client.getInstance()
-            client.connect(host, port)
-            if (client.waitForConnection(1000)) {
-                val chatClient = ChatClient(client)
-                chatClient.login(username)
-                chatClient.start()
+        client = Client.getInstance()
+        if (!client.isConnected) {
+            if (login) {
+                client.connect(host, port)
+                if (client.waitForConnection(1000)) {
+                    val chatClient = ChatClient(client)
+                    chatClient.login(username)
+                    chatClient.start()
+                } else {
+                    getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
+                        .putBoolean("login", false)
+                        .apply()
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
             } else {
-                getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
-                    .putBoolean("login", false)
-                    .apply()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
-        } else {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
         }
 
         chatRoomAdapter = ChatRoomAdapter(this, chatRooms)
