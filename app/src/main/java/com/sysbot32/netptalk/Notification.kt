@@ -22,8 +22,19 @@ fun createNotificationChannel(channelId: String) {
 
 fun notifyChatMessage(chatMessage: ChatMessage) {
     val builder: NotificationCompat.Builder =
-        NotificationCompat.Builder(mainActivity, "default").setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(chatMessage.username).setContentText(chatMessage.content)
+        NotificationCompat.Builder(mainActivity, "default")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(chatMessage.username)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    if (chatMessage.chatType == "text") {
+        builder.setContentText(chatMessage.content)
+    } else if (chatMessage.chatType == "image") {
+        val bitmap = base64ToBitmap(chatMessage.content)
+        builder.setStyle(
+            NotificationCompat.BigPictureStyle()
+                .bigPicture(bitmap)
+                .bigLargeIcon(null)
+        ).setContentText("(이미지)")
+    }
     NotificationManagerCompat.from(mainActivity).notify(0, builder.build())
 }
