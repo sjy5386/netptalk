@@ -36,13 +36,11 @@ class ChatClient(client: Client) {
             if (type == "chat") {
                 val chatType: String = jsonObject.getString("chatType")
                 val chatMessage: ChatMessage = ChatMessage(jsonObject)
-                if (chatType == "text") {
-                    val chatMessages: MutableList<ChatMessage> =
-                        getChatMessages(chatMessage.chatRoom)
-                    chatMessages.add(chatMessage)
-                    if ((chatActivity == null) || (chatActivity!!.chatRoom != chatMessage.chatRoom)) {
-                        notifyChatMessage(chatMessage)
-                    }
+                val chatMessages: MutableList<ChatMessage> =
+                    getChatMessages(chatMessage.chatRoom)
+                chatMessages.add(chatMessage)
+                if ((chatActivity == null) || (chatActivity!!.chatRoom != chatMessage.chatRoom)) {
+                    notifyChatMessage(chatMessage)
                 }
             } else if (type == "chatRoom") {
                 if (jsonObject.getString("action") == "add") {
@@ -60,11 +58,7 @@ class ChatClient(client: Client) {
         client.write(jsonObject.toString())
     }
 
-    fun sendMessage(text: String, chatRoom: String) {
-        sendMessage("text", text, chatRoom)
-    }
-
-    private fun sendMessage(chatType: String, content: String, chatRoom: String) {
+    fun sendMessage(chatType: String, content: String, chatRoom: String) {
         val jsonObject: JSONObject = JSONObject()
             .put("type", "chat")
             .put("username", username)

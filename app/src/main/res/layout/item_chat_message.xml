@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -30,29 +31,25 @@
             app:layout_constraintStart_toEndOf="@+id/imageProfile"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearContent"
+        <ImageView
+            android:id="@+id/imageMessage"
+            android:layout_width="256dp"
+            android:layout_height="144dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toEndOf="@+id/imageProfile"
+            app:layout_constraintTop_toBottomOf="@+id/textUsername" />
+
+        <TextView
+            android:id="@+id/textMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:background="@color/white"
-            android:orientation="horizontal"
             android:padding="4dp"
             app:layout_constraintStart_toEndOf="@+id/imageProfile"
-            app:layout_constraintTop_toBottomOf="@+id/textUsername">
-
-            <TextView
-                android:id="@+id/textMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Text" />
-
-            <ImageView
-                android:id="@+id/imageMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/textUsername" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

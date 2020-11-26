@@ -10,4 +10,5 @@
     <string name="toast_failed_connect">서버에 연결하지 못했습니다.</string>
     <string name="menu_logout">로그아웃</string>
     <string name="button_submit">✈</string>
+    <string name="menu_image">이미지 전송</string>
 </resources>

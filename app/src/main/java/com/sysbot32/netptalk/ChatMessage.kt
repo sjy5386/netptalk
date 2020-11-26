@@ -1,11 +1,15 @@
 package com.sysbot32.netptalk
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sysbot32.netptalk.databinding.ItemChatMessageBinding
 import org.json.JSONObject
+import java.io.ByteArrayInputStream
 
 data class ChatMessage(
     val username: String,
@@ -41,6 +45,13 @@ class ChatMessageAdapter(
         holder.binding.textUsername.text = chatMessage.username
         if (chatMessage.chatType == "text") {
             holder.binding.textMessage.text = chatMessage.content
+            holder.binding.imageMessage.visibility = View.GONE
+        } else if (chatMessage.chatType == "image") {
+            val buf: ByteArray = Base64.decode(chatMessage.content, 0)
+            val byteArrayInputStream = ByteArrayInputStream(buf)
+            val bitmap = BitmapFactory.decodeStream(byteArrayInputStream)
+            holder.binding.imageMessage.setImageBitmap(bitmap)
+            holder.binding.textMessage.visibility = View.GONE
         }
     }
 
