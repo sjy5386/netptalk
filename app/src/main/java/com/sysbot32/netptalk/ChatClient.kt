@@ -44,7 +44,8 @@ class ChatClient(client: Client) {
                 }
             } else if (type == "chatRoom") {
                 if (jsonObject.getString("action") == "add") {
-                    chatRooms.add(ChatRoom(jsonObject.getString("title")))
+                    chatRooms.add(0, ChatRoom(jsonObject.getString("title")))
+                    mainActivity.chatRoomAdapter.notifyItemInserted(0)
                 }
             }
         }

@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         chatRoomAdapter = ChatRoomAdapter(this, chatRooms)
+        binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = chatRoomAdapter
 
