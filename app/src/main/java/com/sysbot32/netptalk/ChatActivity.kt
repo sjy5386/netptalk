@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sysbot32.netptalk.databinding.ActivityChatBinding
@@ -76,16 +77,24 @@ class ChatActivity : AppCompatActivity() {
         if ((resultCode == RESULT_OK) && (data != null) && (data.data != null)) {
             if (requestCode == REQUEST_CODE_IMAGE) {
                 val uri: Uri = data.data!!
-                val bitmap =
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
-                        ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
-                    else
-                        MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-                val buf: ByteArray = byteArrayOutputStream.toByteArray()
-                val content: String = Base64.encodeToString(buf, 0)
-                chatClient?.sendMessage("image", content, chatRoom)
+                Thread() {
+                    val bitmap =
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
+                            ImageDecoder.decodeBitmap(
+                                ImageDecoder.createSource(
+                                    contentResolver,
+                                    uri
+                                )
+                            )
+                        else
+                            MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+                    val buf: ByteArray = byteArrayOutputStream.toByteArray()
+                    val content: String = Base64.encodeToString(buf, 0)
+                    chatClient?.sendMessage("image", content, chatRoom)
+                }.start()
+                Toast.makeText(this, "이미지를 전송하고 있습니다...", Toast.LENGTH_SHORT).show()
             }
         }
     }
