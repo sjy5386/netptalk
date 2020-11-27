@@ -69,7 +69,11 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.itemEmoticon) {
-            binding.recyclerViewEmoticon.visibility = View.VISIBLE
+            if (binding.recyclerViewEmoticon.visibility == View.VISIBLE) {
+                binding.recyclerViewEmoticon.visibility = View.GONE
+            } else {
+                binding.recyclerViewEmoticon.visibility = View.VISIBLE
+            }
         } else if (item.itemId == R.id.itemImage) {
             startActivityForResult(
                 Intent().setAction(Intent.ACTION_PICK).setDataAndType(
