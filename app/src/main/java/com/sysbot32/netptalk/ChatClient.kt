@@ -11,7 +11,7 @@ class ChatClient(client: Client) {
     private val client: Client = client
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
 
-    private var username: String = "User"
+    private var username: String = ".anonymous"
 
     init {
         chatClient = this

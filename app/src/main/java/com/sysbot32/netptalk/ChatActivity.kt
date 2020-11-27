@@ -83,7 +83,7 @@ class ChatActivity : AppCompatActivity() {
                     val content: String = bitmapToBase64(bitmap)
                     chatClient?.sendMessage("image", content, chatRoom)
                 }.start()
-                Toast.makeText(this, "이미지를 전송하고 있습니다...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.toast_sending_image, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -34,7 +34,7 @@ fun notifyChatMessage(chatMessage: ChatMessage) {
             NotificationCompat.BigPictureStyle()
                 .bigPicture(bitmap)
                 .bigLargeIcon(null)
-        ).setContentText("(이미지)")
+        ).setContentText(mainActivity.getString(R.string.notification_text_image))
     }
     NotificationManagerCompat.from(mainActivity).notify(0, builder.build())
 }

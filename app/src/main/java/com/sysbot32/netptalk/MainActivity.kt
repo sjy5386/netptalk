@@ -59,11 +59,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.floatingActionButton.setOnClickListener {
             val editTitle: EditText = EditText(this)
-            AlertDialog.Builder(this).setTitle("채팅방 만들기").setMessage("채팅방 제목 입력")
+            AlertDialog.Builder(this)
+                .setTitle(R.string.alert_title_chatroom)
+                .setMessage(R.string.alert_message_chatroom)
                 .setView(editTitle)
-                .setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+                .setPositiveButton(getString(R.string.button_ok)) { dialogInterface: DialogInterface, i: Int ->
                     chatClient?.addChatRoom(editTitle.text.toString())
-                }.setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
+                }
+                .setNegativeButton(getString(R.string.button_cancel)) { dialogInterface: DialogInterface, i: Int ->
                 }.create().show()
         }
 
