@@ -24,6 +24,10 @@ class ChatClient(client: Client) {
         executorService.submit(this::reading)
     }
 
+    fun stop() {
+        executorService.shutdownNow()
+    }
+
     private fun reading() {
         while (true) {
             val received: String = client.read()
@@ -60,28 +64,43 @@ class ChatClient(client: Client) {
 
     fun login(username: String) {
         this.username = username
-        val jsonObject: JSONObject = JSONObject()
-            .put("type", "login")
-            .put("username", username)
-        client.write(jsonObject.toString())
+        client.write(
+            JSONObject()
+                .put("type", "login")
+                .put("username", username)
+                .toString()
+        )
+    }
+
+    fun logout() {
+        client.write(
+            JSONObject()
+                .put("type", "logout")
+                .put("username", username)
+                .toString()
+        )
     }
 
     fun sendMessage(chatType: String, content: String, chatRoom: String) {
-        val jsonObject: JSONObject = JSONObject()
-            .put("type", "chat")
-            .put("username", username)
-            .put("chatType", chatType)
-            .put("content", content)
-            .put("chatRoom", chatRoom)
-        client.write(jsonObject.toString())
+        client.write(
+            JSONObject()
+                .put("type", "chat")
+                .put("username", username)
+                .put("chatType", chatType)
+                .put("content", content)
+                .put("chatRoom", chatRoom)
+                .toString()
+        )
     }
 
     fun addChatRoom(title: String) {
-        val jsonObject: JSONObject = JSONObject()
-            .put("type", "chatRoom")
-            .put("action", "add")
-            .put("title", title)
-            .put("users", JSONArray().put(username))
-        client.write(jsonObject.toString())
+        client.write(
+            JSONObject()
+                .put("type", "chatRoom")
+                .put("action", "add")
+                .put("title", title)
+                .put("users", JSONArray().put(username))
+                .toString()
+        )
     }
 }

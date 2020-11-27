@@ -80,6 +80,8 @@ class MainActivity : AppCompatActivity() {
             getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
                 .putBoolean("login", false)
                 .apply()
+            chatClient?.logout()
+            chatClient?.stop()
             client.disconnect()
             chatClient = null
             startActivity(Intent(this, LoginActivity::class.java))
