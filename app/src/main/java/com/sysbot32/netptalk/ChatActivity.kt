@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,6 +45,10 @@ class ChatActivity : AppCompatActivity() {
         } else {
             finish()
         }
+
+        binding.recyclerViewEmoticon.setHasFixedSize(true)
+        binding.recyclerViewEmoticon.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewEmoticon.adapter = EmoticonAdapter(this, emoticons)
     }
 
     override fun onResume() {
@@ -63,7 +68,9 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.itemImage) {
+        if (item.itemId == R.id.itemEmoticon) {
+            binding.recyclerViewEmoticon.visibility = View.VISIBLE
+        } else if (item.itemId == R.id.itemImage) {
             startActivityForResult(
                 Intent().setAction(Intent.ACTION_PICK).setDataAndType(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"

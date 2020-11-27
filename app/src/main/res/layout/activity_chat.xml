@@ -33,20 +33,30 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonSubmit"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:text="@string/button_submit"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/editTextChat" />
+            app:layout_constraintStart_toEndOf="@+id/editTextChat"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewEmoticon"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextChat" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -46,6 +46,12 @@ class ChatMessageAdapter(
         if (chatMessage.chatType == "text") {
             holder.binding.textMessage.text = chatMessage.content
             holder.binding.imageMessage.visibility = View.GONE
+        } else if (chatMessage.chatType == "emoticon") {
+            val emoticon = chatMessage.content.toInt()
+            if (emoticons.contains(emoticon)) {
+                holder.binding.imageMessage.setImageResource(emoticon)
+                holder.binding.textMessage.visibility = View.GONE
+            }
         } else if (chatMessage.chatType == "image") {
             val bitmap = base64ToBitmap(chatMessage.content)
             holder.binding.imageMessage.setImageBitmap(bitmap)

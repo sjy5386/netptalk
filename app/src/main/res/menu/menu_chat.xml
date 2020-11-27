@@ -2,6 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/itemEmoticon"
+        android:title="@string/menu_emoticon" />
+    <item
         android:id="@+id/itemImage"
         android:title="@string/menu_image" />
 </menu>
