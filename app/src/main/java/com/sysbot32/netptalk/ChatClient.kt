@@ -39,10 +39,11 @@ class ChatClient(client: Client) {
                 val chatMessage: ChatMessage = ChatMessage(jsonObject)
                 val chatMessages: MutableList<ChatMessage> =
                     getChatMessages(chatMessage.chatRoom)
-                chatMessages.add(chatMessage)
+                val lastIndex: Int = chatMessages.size
+                chatMessages.add(lastIndex, chatMessage)
                 val chatMessageAdapter = chatMessageAdapterMap[chatMessage.chatRoom]
+                val chatActivity = chatActivity
                 if ((chatMessageAdapter != null) && (chatActivity.chatRoom == chatMessage.chatRoom)) {
-                    val lastIndex: Int = chatMessages.size - 1
                     chatActivity.runOnUiThread {
                         chatMessageAdapter.notifyItemInserted(lastIndex)
                         chatActivity.binding.recyclerViewChat.scrollToPosition(lastIndex)

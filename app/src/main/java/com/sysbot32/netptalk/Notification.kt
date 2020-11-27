@@ -3,6 +3,7 @@ package com.sysbot32.netptalk
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -28,6 +29,13 @@ fun notifyChatMessage(chatMessage: ChatMessage) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     if (chatMessage.chatType == "text") {
         builder.setContentText(chatMessage.content)
+    } else if (chatMessage.chatType == "emoticon") {
+        val emoticon = chatMessage.content.toInt()
+        builder.setStyle(
+            NotificationCompat.BigPictureStyle()
+                .bigPicture(BitmapFactory.decodeResource(mainActivity.resources, emoticon))
+                .bigLargeIcon(null)
+        ).setContentText(mainActivity.getString(R.string.notification_text_emoticon))
     } else if (chatMessage.chatType == "image") {
         val bitmap = base64ToBitmap(chatMessage.content)
         builder.setStyle(

@@ -18,4 +18,5 @@
     <string name="alert_message_chatroom">채팅방 제목 입력</string>
     <string name="notification_text_image">(이미지)</string>
     <string name="menu_emoticon">이모티콘</string>
+    <string name="notification_text_emoticon">(이모티콘)</string>
 </resources>
