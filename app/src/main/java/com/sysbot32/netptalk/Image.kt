@@ -9,7 +9,7 @@ import android.util.Base64
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
-fun uriToBitmap(uri: Uri): Bitmap {
+fun loadBitmapByUri(uri: Uri): Bitmap {
     val contentResolver = chatActivity.contentResolver
     return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
         ImageDecoder.decodeBitmap(
