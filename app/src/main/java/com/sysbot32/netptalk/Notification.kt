@@ -27,22 +27,26 @@ fun notifyChatMessage(chatMessage: ChatMessage) {
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(chatMessage.username)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-    if (chatMessage.chatType == "text") {
-        builder.setContentText(chatMessage.content)
-    } else if (chatMessage.chatType == "emoticon") {
-        val emoticon = chatMessage.content.toInt()
-        builder.setStyle(
-            NotificationCompat.BigPictureStyle()
-                .bigPicture(BitmapFactory.decodeResource(mainActivity.resources, emoticon))
-                .bigLargeIcon(null)
-        ).setContentText(mainActivity.getString(R.string.notification_text_emoticon))
-    } else if (chatMessage.chatType == "image") {
-        val bitmap = base64ToBitmap(chatMessage.content)
-        builder.setStyle(
-            NotificationCompat.BigPictureStyle()
-                .bigPicture(bitmap)
-                .bigLargeIcon(null)
-        ).setContentText(mainActivity.getString(R.string.notification_text_image))
+    when (chatMessage.chatType) {
+        "text" -> {
+            builder.setContentText(chatMessage.content)
+        }
+        "emoticon" -> {
+            val emoticon = chatMessage.content.toInt()
+            builder.setStyle(
+                NotificationCompat.BigPictureStyle()
+                    .bigPicture(BitmapFactory.decodeResource(mainActivity.resources, emoticon))
+                    .bigLargeIcon(null)
+            ).setContentText(mainActivity.getString(R.string.notification_text_emoticon))
+        }
+        "image" -> {
+            val bitmap = base64ToBitmap(chatMessage.content)
+            builder.setStyle(
+                NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap)
+                    .bigLargeIcon(null)
+            ).setContentText(mainActivity.getString(R.string.notification_text_image))
+        }
     }
     NotificationManagerCompat.from(mainActivity).notify(0, builder.build())
 }

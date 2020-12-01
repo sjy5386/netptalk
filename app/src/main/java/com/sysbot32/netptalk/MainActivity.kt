@@ -79,16 +79,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menuLogout) {
-            getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
-                .putBoolean("login", false)
-                .apply()
-            chatClient?.logout()
-            chatClient?.stop()
-            client.disconnect()
-            chatClient = null
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+        when (item.itemId) {
+            R.id.menuLogout -> {
+                getSharedPreferences("com.sysbot32.netptalk", MODE_PRIVATE).edit()
+                    .putBoolean("login", false)
+                    .apply()
+                chatClient?.logout()
+                chatClient?.stop()
+                client.disconnect()
+                chatClient = null
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
         }
         return super.onOptionsItemSelected(item)
     }

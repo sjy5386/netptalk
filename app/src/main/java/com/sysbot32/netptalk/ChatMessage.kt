@@ -43,22 +43,26 @@ class ChatMessageAdapter(
     override fun onBindViewHolder(holder: ChatMessageViewHolder, position: Int) {
         val chatMessage: ChatMessage = chatMessages[position]
         holder.binding.textUsername.text = chatMessage.username
-        if (chatMessage.chatType == "text") {
-            holder.binding.textMessage.text = chatMessage.content
-            holder.binding.textMessage.visibility = View.VISIBLE
-            holder.binding.imageMessage.visibility = View.GONE
-        } else if (chatMessage.chatType == "emoticon") {
-            val emoticon = chatMessage.content.toInt()
-            if (emoticons.contains(emoticon)) {
-                holder.binding.imageMessage.setImageResource(emoticon)
+        when (chatMessage.chatType) {
+            "text" -> {
+                holder.binding.textMessage.text = chatMessage.content
+                holder.binding.textMessage.visibility = View.VISIBLE
+                holder.binding.imageMessage.visibility = View.GONE
+            }
+            "emoticon" -> {
+                val emoticon = chatMessage.content.toInt()
+                if (emoticons.contains(emoticon)) {
+                    holder.binding.imageMessage.setImageResource(emoticon)
+                    holder.binding.textMessage.visibility = View.GONE
+                    holder.binding.imageMessage.visibility = View.VISIBLE
+                }
+            }
+            "image" -> {
+                val bitmap = base64ToBitmap(chatMessage.content)
+                holder.binding.imageMessage.setImageBitmap(bitmap)
                 holder.binding.textMessage.visibility = View.GONE
                 holder.binding.imageMessage.visibility = View.VISIBLE
             }
-        } else if (chatMessage.chatType == "image") {
-            val bitmap = base64ToBitmap(chatMessage.content)
-            holder.binding.imageMessage.setImageBitmap(bitmap)
-            holder.binding.textMessage.visibility = View.GONE
-            holder.binding.imageMessage.visibility = View.VISIBLE
         }
     }
 

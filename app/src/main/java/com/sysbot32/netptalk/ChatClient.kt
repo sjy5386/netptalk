@@ -32,31 +32,33 @@ class ChatClient(client: Client) {
         while (true) {
             val received: String = client.read()
             println(received)
-            val jsonObject: JSONObject = JSONObject(received)
-            val type: String = jsonObject.getString("type")
-            if (type == "chat") {
-                val chatType: String = jsonObject.getString("chatType")
-                val chatMessage: ChatMessage = ChatMessage(jsonObject)
-                val chatMessages: MutableList<ChatMessage> =
-                    getChatMessages(chatMessage.chatRoom)
-                val lastIndex: Int = chatMessages.size
-                chatMessages.add(lastIndex, chatMessage)
-                val chatMessageAdapter = chatMessageAdapterMap[chatMessage.chatRoom]
-                val chatActivity = chatActivity
-                if ((chatMessageAdapter != null) && (chatActivity.chatRoom == chatMessage.chatRoom)) {
-                    chatActivity.runOnUiThread {
-                        chatMessageAdapter.notifyItemInserted(lastIndex)
-                        chatActivity.binding.recyclerViewChat.scrollToPosition(lastIndex)
+            val jsonObject = JSONObject(received)
+            when (jsonObject.getString("type")) {
+                "chat" -> {
+                    val chatType: String = jsonObject.getString("chatType")
+                    val chatMessage = ChatMessage(jsonObject)
+                    val chatMessages: MutableList<ChatMessage> =
+                        getChatMessages(chatMessage.chatRoom)
+                    val lastIndex: Int = chatMessages.size
+                    chatMessages.add(lastIndex, chatMessage)
+                    val chatMessageAdapter = chatMessageAdapterMap[chatMessage.chatRoom]
+                    val chatActivity = chatActivity
+                    if ((chatMessageAdapter != null) && (chatActivity.chatRoom == chatMessage.chatRoom)) {
+                        chatActivity.runOnUiThread {
+                            chatMessageAdapter.notifyItemInserted(lastIndex)
+                            chatActivity.binding.recyclerViewChat.scrollToPosition(lastIndex)
+                        }
+                    }
+                    if ((!chatActivity.status) || (chatActivity.chatRoom != chatMessage.chatRoom)) {
+                        notifyChatMessage(chatMessage)
                     }
                 }
-                if ((!chatActivity.status) || (chatActivity.chatRoom != chatMessage.chatRoom)) {
-                    notifyChatMessage(chatMessage)
-                }
-            } else if (type == "chatRoom") {
-                if (jsonObject.getString("action") == "add") {
-                    chatRooms.add(0, ChatRoom(jsonObject.getString("title")))
-                    mainActivity.runOnUiThread {
-                        mainActivity.chatRoomAdapter.notifyItemInserted(0)
+                "chatRoom" -> {
+                    if (jsonObject.getString("action") == "add") {
+                        chatRooms.add(0, ChatRoom(jsonObject.getString("title")))
+                        mainActivity.runOnUiThread {
+                            mainActivity.chatRoomAdapter.notifyItemInserted(0)
+                        }
                     }
                 }
             }

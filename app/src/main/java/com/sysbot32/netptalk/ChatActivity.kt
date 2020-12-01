@@ -71,50 +71,55 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.itemEmoticon) {
-            if (binding.recyclerViewEmoticon.visibility == View.VISIBLE) {
-                binding.recyclerViewEmoticon.visibility = View.GONE
-            } else {
-                binding.recyclerViewEmoticon.visibility = View.VISIBLE
+        when (item.itemId) {
+            R.id.itemEmoticon -> {
+                if (binding.recyclerViewEmoticon.visibility == View.VISIBLE) {
+                    binding.recyclerViewEmoticon.visibility = View.GONE
+                } else {
+                    binding.recyclerViewEmoticon.visibility = View.VISIBLE
+                }
             }
-        } else if (item.itemId == R.id.itemImage) {
-            startActivityForResult(
-                Intent().setAction(Intent.ACTION_PICK).setDataAndType(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-                ), REQUEST_CODE_IMAGE
-            )
-        } else if (item.itemId == R.id.itemInvite) {
-            val editInvitee: EditText = EditText(this)
-            AlertDialog.Builder(this)
-                .setTitle(R.string.menu_invite)
-                .setMessage(R.string.alert_message_invite)
-                .setView(editInvitee)
-                .setPositiveButton(R.string.button_ok) { dialogInterface: DialogInterface, i: Int ->
-                    chatClient?.inviteToChatRoom(chatRoom, editInvitee.text.toString())
-                }
-                .setNegativeButton(R.string.button_cancel) { dialogInterface: DialogInterface, i: Int ->
-                }.create().show()
-        } else if (item.itemId == R.id.itemLeave) {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.menu_leave)
-                .setMessage(R.string.alert_message_leave)
-                .setPositiveButton(R.string.button_yes) { dialogInterface: DialogInterface, i: Int ->
-                    chatClient?.leaveChatRoom(chatRoom)
-                    var index: Int = -1
-                    for (i in 0..chatRooms.size) {
-                        if (chatRooms[i].title == chatRoom) {
-                            index = i
-                            break
+            R.id.itemImage -> {
+                startActivityForResult(
+                    Intent().setAction(Intent.ACTION_PICK).setDataAndType(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
+                    ), REQUEST_CODE_IMAGE
+                )
+            }
+            R.id.itemInvite -> {
+                val editInvitee: EditText = EditText(this)
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.menu_invite)
+                    .setMessage(R.string.alert_message_invite)
+                    .setView(editInvitee)
+                    .setPositiveButton(R.string.button_ok) { dialogInterface: DialogInterface, i: Int ->
+                        chatClient?.inviteToChatRoom(chatRoom, editInvitee.text.toString())
+                    }
+                    .setNegativeButton(R.string.button_cancel) { dialogInterface: DialogInterface, i: Int ->
+                    }.create().show()
+            }
+            R.id.itemLeave -> {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.menu_leave)
+                    .setMessage(R.string.alert_message_leave)
+                    .setPositiveButton(R.string.button_yes) { dialogInterface: DialogInterface, i: Int ->
+                        chatClient?.leaveChatRoom(chatRoom)
+                        var index: Int = -1
+                        for (i in 0..chatRooms.size) {
+                            if (chatRooms[i].title == chatRoom) {
+                                index = i
+                                break
+                            }
                         }
+                        if (index >= 0) {
+                            chatRooms.removeAt(index)
+                            mainActivity.chatRoomAdapter.notifyItemRemoved(index)
+                        }
+                        finish()
                     }
-                    if (index >= 0) {
-                        chatRooms.removeAt(index)
-                        mainActivity.chatRoomAdapter.notifyItemRemoved(index)
-                    }
-                    finish()
-                }
-                .setNegativeButton(R.string.button_no) { dialogInterface: DialogInterface, i: Int ->
-                }.create().show()
+                    .setNegativeButton(R.string.button_no) { dialogInterface: DialogInterface, i: Int ->
+                    }.create().show()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -122,14 +127,16 @@ class ChatActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if ((resultCode == RESULT_OK) && (data != null) && (data.data != null)) {
-            if (requestCode == REQUEST_CODE_IMAGE) {
-                val uri: Uri = data.data!!
-                Thread() {
-                    val bitmap = loadBitmapByUri(uri)
-                    val content: String = bitmapToBase64(bitmap)
-                    chatClient?.sendMessage("image", content, chatRoom)
-                }.start()
-                Toast.makeText(this, R.string.toast_sending_image, Toast.LENGTH_SHORT).show()
+            when (requestCode) {
+                REQUEST_CODE_IMAGE -> {
+                    val uri: Uri = data.data!!
+                    Thread() {
+                        val bitmap = loadBitmapByUri(uri)
+                        val content: String = bitmapToBase64(bitmap)
+                        chatClient?.sendMessage("image", content, chatRoom)
+                    }.start()
+                    Toast.makeText(this, R.string.toast_sending_image, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
