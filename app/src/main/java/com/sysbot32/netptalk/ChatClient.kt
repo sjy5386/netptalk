@@ -94,6 +94,7 @@ class ChatClient(client: Client) {
                 .put("chatType", chatType)
                 .put("content", content)
                 .put("chatRoom", chatRoom)
+                .put("timestamp", System.currentTimeMillis())
                 .toString()
         )
     }
@@ -105,6 +106,7 @@ class ChatClient(client: Client) {
                 .put("action", "add")
                 .put("title", title)
                 .put("users", JSONArray().put(username))
+                .put("timestamp", System.currentTimeMillis())
                 .toString()
         )
     }
@@ -117,6 +119,7 @@ class ChatClient(client: Client) {
                 .put("title", chatRoom)
                 .put("inviter", username)
                 .put("invitee", invitee)
+                .put("timestamp", System.currentTimeMillis())
                 .toString()
         )
     }
@@ -128,6 +131,7 @@ class ChatClient(client: Client) {
                 .put("action", "leave")
                 .put("title", chatRoom)
                 .put("username", username)
+                .put("timestamp", System.currentTimeMillis())
                 .toString()
         )
     }

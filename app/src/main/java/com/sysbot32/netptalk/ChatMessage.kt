@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sysbot32.netptalk.databinding.ItemChatMessageBinding
 import org.json.JSONObject
+import java.text.SimpleDateFormat
 
 private val chatMessagesMap: MutableMap<String, MutableList<ChatMessage>> = mutableMapOf()
 val chatMessageAdapterMap: MutableMap<String, ChatMessageAdapter> = mutableMapOf()
@@ -15,13 +16,15 @@ data class ChatMessage(
     val username: String,
     val chatType: String,
     val content: String,
-    val chatRoom: String
+    val chatRoom: String,
+    val timestamp: Long
 ) {
     constructor(jsonObject: JSONObject) : this(
         jsonObject.getString("username"),
         jsonObject.getString("chatType"),
         jsonObject.getString("content"),
-        jsonObject.getString("chatRoom")
+        jsonObject.getString("chatRoom"),
+        jsonObject.getLong("timestamp")
     )
 }
 
@@ -44,8 +47,11 @@ class ChatMessageAdapter(
         val chatMessage: ChatMessage = chatMessages[position]
         if ((chatMessage.chatType != "system") && (chatMessage.username != username)) {
             holder.binding.textUsername.text = chatMessage.username
+            holder.binding.textTimestamp.text =
+                SimpleDateFormat("a h:mm").format(chatMessage.timestamp)
             holder.binding.textUsername.visibility = View.VISIBLE
             holder.binding.imageProfile.visibility = View.VISIBLE
+            holder.binding.textTimestamp.visibility = View.VISIBLE
         }
         when (chatMessage.chatType) {
             "text" -> {
