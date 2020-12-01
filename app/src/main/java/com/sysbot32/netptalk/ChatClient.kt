@@ -104,4 +104,16 @@ class ChatClient(client: Client) {
                 .toString()
         )
     }
+
+    fun inviteToChatRoom(chatRoom: String, invitee: String) {
+        client.write(
+            JSONObject()
+                .put("type", "chatRoom")
+                .put("action", "invite")
+                .put("title", chatRoom)
+                .put("inviter", username)
+                .put("invitee", invitee)
+                .toString()
+        )
+    }
 }

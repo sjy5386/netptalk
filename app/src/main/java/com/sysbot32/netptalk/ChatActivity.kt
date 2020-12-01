@@ -1,5 +1,6 @@
 package com.sysbot32.netptalk
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,7 +8,9 @@ import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sysbot32.netptalk.databinding.ActivityChatBinding
@@ -80,6 +83,17 @@ class ChatActivity : AppCompatActivity() {
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
                 ), REQUEST_CODE_IMAGE
             )
+        } else if (item.itemId == R.id.itemInvite) {
+            val editInvitee: EditText = EditText(this)
+            AlertDialog.Builder(this)
+                .setTitle(R.string.menu_invite)
+                .setMessage(R.string.alert_message_invite)
+                .setView(editInvitee)
+                .setPositiveButton(R.string.button_ok) { dialogInterface: DialogInterface, i: Int ->
+                    chatClient?.inviteToChatRoom(chatRoom, editInvitee.text.toString())
+                }
+                .setNegativeButton(R.string.button_cancel) { dialogInterface: DialogInterface, i: Int ->
+                }.create().show()
         }
         return super.onOptionsItemSelected(item)
     }
