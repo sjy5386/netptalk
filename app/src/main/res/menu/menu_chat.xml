@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/itemInvite"
+        android:id="@+id/menuInvite"
         android:title="@string/menu_invite" />
     <item
-        android:id="@+id/itemEmoticon"
+        android:id="@+id/menuEmoticon"
         android:title="@string/menu_emoticon" />
     <item
-        android:id="@+id/itemImage"
+        android:id="@+id/menuImage"
         android:title="@string/menu_image" />
     <item
-        android:id="@+id/itemLeave"
+        android:id="@+id/menuLeave"
         android:title="@string/menu_leave" />
 </menu>

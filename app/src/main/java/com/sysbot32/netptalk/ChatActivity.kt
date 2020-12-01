@@ -72,21 +72,21 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.itemEmoticon -> {
+            R.id.menuEmoticon -> {
                 if (binding.recyclerViewEmoticon.visibility == View.VISIBLE) {
                     binding.recyclerViewEmoticon.visibility = View.GONE
                 } else {
                     binding.recyclerViewEmoticon.visibility = View.VISIBLE
                 }
             }
-            R.id.itemImage -> {
+            R.id.menuImage -> {
                 startActivityForResult(
                     Intent().setAction(Intent.ACTION_PICK).setDataAndType(
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
                     ), REQUEST_CODE_IMAGE
                 )
             }
-            R.id.itemInvite -> {
+            R.id.menuInvite -> {
                 val editInvitee: EditText = EditText(this)
                 AlertDialog.Builder(this)
                     .setTitle(R.string.menu_invite)
@@ -98,7 +98,7 @@ class ChatActivity : AppCompatActivity() {
                     .setNegativeButton(R.string.button_cancel) { dialogInterface: DialogInterface, i: Int ->
                     }.create().show()
             }
-            R.id.itemLeave -> {
+            R.id.menuLeave -> {
                 AlertDialog.Builder(this)
                     .setTitle(R.string.menu_leave)
                     .setMessage(R.string.alert_message_leave)
