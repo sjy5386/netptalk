@@ -54,10 +54,12 @@ class ChatClient(client: Client) {
                     }
                 }
                 "chatRoom" -> {
-                    if (jsonObject.getString("action") == "add") {
-                        chatRooms.add(0, ChatRoom(jsonObject.getString("title")))
-                        mainActivity.runOnUiThread {
-                            mainActivity.chatRoomAdapter.notifyItemInserted(0)
+                    when (jsonObject.getString("action")) {
+                        "add", "invite" -> {
+                            chatRooms.add(0, ChatRoom(jsonObject.getString("title")))
+                            mainActivity.runOnUiThread {
+                                mainActivity.chatRoomAdapter.notifyItemInserted(0)
+                            }
                         }
                     }
                 }
