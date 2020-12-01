@@ -116,4 +116,15 @@ class ChatClient(client: Client) {
                 .toString()
         )
     }
+
+    fun leaveChatRoom(chatRoom: String) {
+        client.write(
+            JSONObject()
+                .put("type", "chatRoom")
+                .put("action", "leave")
+                .put("title", chatRoom)
+                .put("username", username)
+                .toString()
+        )
+    }
 }

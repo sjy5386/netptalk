@@ -21,4 +21,8 @@
     <string name="notification_text_emoticon">(이모티콘)</string>
     <string name="menu_invite">대화상대 초대</string>
     <string name="alert_message_invite">이름 입력</string>
+    <string name="menu_leave">채팅방 나가기</string>
+    <string name="alert_message_leave">정말로 채팅방을 나갈까요?</string>
+    <string name="button_yes">예</string>
+    <string name="button_no">아니오</string>
 </resources>

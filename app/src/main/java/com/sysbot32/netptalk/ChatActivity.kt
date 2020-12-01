@@ -94,6 +94,27 @@ class ChatActivity : AppCompatActivity() {
                 }
                 .setNegativeButton(R.string.button_cancel) { dialogInterface: DialogInterface, i: Int ->
                 }.create().show()
+        } else if (item.itemId == R.id.itemLeave) {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.menu_leave)
+                .setMessage(R.string.alert_message_leave)
+                .setPositiveButton(R.string.button_yes) { dialogInterface: DialogInterface, i: Int ->
+                    chatClient?.leaveChatRoom(chatRoom)
+                    var index: Int = -1
+                    for (i in 0..chatRooms.size) {
+                        if (chatRooms[i].title == chatRoom) {
+                            index = i
+                            break
+                        }
+                    }
+                    if (index >= 0) {
+                        chatRooms.removeAt(index)
+                        mainActivity.chatRoomAdapter.notifyItemRemoved(index)
+                    }
+                    finish()
+                }
+                .setNegativeButton(R.string.button_no) { dialogInterface: DialogInterface, i: Int ->
+                }.create().show()
         }
         return super.onOptionsItemSelected(item)
     }
