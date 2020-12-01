@@ -42,26 +42,36 @@ class ChatMessageAdapter(
 
     override fun onBindViewHolder(holder: ChatMessageViewHolder, position: Int) {
         val chatMessage: ChatMessage = chatMessages[position]
-        holder.binding.textUsername.text = chatMessage.username
+        if ((chatMessage.chatType != "system") && (chatMessage.username != username)) {
+            holder.binding.textUsername.text = chatMessage.username
+            holder.binding.textUsername.visibility = View.VISIBLE
+            holder.binding.imageProfile.visibility = View.VISIBLE
+        }
         when (chatMessage.chatType) {
             "text" -> {
-                holder.binding.textMessage.text = chatMessage.content
-                holder.binding.textMessage.visibility = View.VISIBLE
-                holder.binding.imageMessage.visibility = View.GONE
+                if (chatMessage.username != username) {
+                    holder.binding.textMessage.text = chatMessage.content
+                    holder.binding.textMessage.visibility = View.VISIBLE
+                } else {
+                    holder.binding.textMyMessage.text = chatMessage.content
+                    holder.binding.textMyMessage.visibility = View.VISIBLE
+                }
             }
             "emoticon" -> {
                 val emoticon = chatMessage.content.toInt()
                 if (emoticons.contains(emoticon)) {
                     holder.binding.imageMessage.setImageResource(emoticon)
-                    holder.binding.textMessage.visibility = View.GONE
                     holder.binding.imageMessage.visibility = View.VISIBLE
                 }
             }
             "image" -> {
                 val bitmap = base64ToBitmap(chatMessage.content)
                 holder.binding.imageMessage.setImageBitmap(bitmap)
-                holder.binding.textMessage.visibility = View.GONE
                 holder.binding.imageMessage.visibility = View.VISIBLE
+            }
+            "system" -> {
+                holder.binding.textSystem.text = chatMessage.content
+                holder.binding.textSystem.visibility = View.VISIBLE
             }
         }
     }
