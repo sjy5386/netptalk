@@ -1,5 +1,6 @@
 package com.sysbot32.netptalk
 
+import android.os.Environment
 import android.util.Base64
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -51,6 +52,9 @@ fun writeFile(file: File, data: ByteArray) {
     fileOutputStream.write(data)
     fileOutputStream.close()
 }
+
+fun isExternalStorageWritable(): Boolean =
+    Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()
 
 fun compress(data: ByteArray): ByteArray {
     val byteArrayOutputStream = ByteArrayOutputStream()
