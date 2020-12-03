@@ -6,8 +6,10 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Base64
+import androidx.core.graphics.scale
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import kotlin.math.min
 
 fun loadBitmapByUri(uri: Uri): Bitmap {
     val contentResolver = chatActivity.contentResolver
@@ -20,6 +22,24 @@ fun loadBitmapByUri(uri: Uri): Bitmap {
         )
     else
         MediaStore.Images.Media.getBitmap(contentResolver, uri)
+}
+
+fun resizeBitmap(bitmap: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap {
+    var width: Int = bitmap.width
+    var height: Int = bitmap.height
+    val ratio: Double = width.toDouble() / height.toDouble()
+    if ((width > height) && (width > maxWidth)) {
+        width = maxWidth
+        height = (width / ratio).toInt()
+    } else if ((width < height) && (height > maxHeight)) {
+        height = maxHeight
+        width = (height * ratio).toInt()
+    } else if ((width == height) && ((width > maxWidth) || (height > maxHeight))) {
+        val size: Int = min(width, height)
+        width = size
+        height = size
+    }
+    return bitmap.scale(width, height)
 }
 
 fun bitmapToBase64(bitmap: Bitmap): String {

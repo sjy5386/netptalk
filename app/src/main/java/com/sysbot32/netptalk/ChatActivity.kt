@@ -131,7 +131,7 @@ class ChatActivity : AppCompatActivity() {
                 REQUEST_CODE_IMAGE -> {
                     val uri: Uri = data.data!!
                     Thread() {
-                        val bitmap = loadBitmapByUri(uri)
+                        val bitmap = resizeBitmap(loadBitmapByUri(uri), 1280, 720)
                         val content: String = bitmapToBase64(bitmap)
                         chatClient?.sendMessage("image", content, chatRoom)
                     }.start()
