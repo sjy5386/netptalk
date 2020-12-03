@@ -3,6 +3,9 @@ package com.sysbot32.netptalk
 import android.util.Base64
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
@@ -33,6 +36,20 @@ data class ChatFile(val filename: String, val data: ByteArray) {
         result = 31 * result + data.contentHashCode()
         return result
     }
+}
+
+fun readFile(file: File): ByteArray {
+    val fileInputStream = FileInputStream(file)
+    val buf: ByteArray = ByteArray(fileInputStream.available())
+    fileInputStream.read(buf)
+    fileInputStream.close()
+    return buf
+}
+
+fun writeFile(file: File, data: ByteArray) {
+    val fileOutputStream = FileOutputStream(file)
+    fileOutputStream.write(data)
+    fileOutputStream.close()
 }
 
 fun compress(data: ByteArray): ByteArray {
