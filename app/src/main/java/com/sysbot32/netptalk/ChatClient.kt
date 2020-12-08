@@ -149,4 +149,15 @@ class ChatClient(client: Client) {
                 .toString()
         )
     }
+
+    fun sendFile(chatRoom: String, chatFile: ChatFile) {
+        write(
+            chatFile.toJSONObject()
+                .put("type", "file")
+                .put("username", username)
+                .put("chatRoom", chatRoom)
+                .put("timestamp", System.currentTimeMillis())
+                .toString()
+        )
+    }
 }
