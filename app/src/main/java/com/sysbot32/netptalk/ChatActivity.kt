@@ -18,6 +18,7 @@ import com.sysbot32.netptalk.databinding.ActivityChatBinding
 lateinit var chatActivity: ChatActivity
 
 const val REQUEST_CODE_IMAGE: Int = 105
+const val REQUEST_CODE_FILE: Int = 102
 
 class ChatActivity : AppCompatActivity() {
     lateinit var binding: ActivityChatBinding
@@ -92,6 +93,11 @@ class ChatActivity : AppCompatActivity() {
                     ), REQUEST_CODE_IMAGE
                 )
             }
+            R.id.menuFile -> {
+                startActivityForResult(
+                    Intent().setAction(Intent.ACTION_GET_CONTENT).setType("*/*"), REQUEST_CODE_FILE
+                )
+            }
             R.id.menuInvite -> {
                 val editInvitee: EditText = EditText(this)
                 AlertDialog.Builder(this)
@@ -142,6 +148,9 @@ class ChatActivity : AppCompatActivity() {
                         chatClient?.sendMessage("image", content, chatRoom)
                     }.start()
                     Toast.makeText(this, R.string.toast_sending_image, Toast.LENGTH_SHORT).show()
+                }
+                REQUEST_CODE_FILE -> {
+                    val uri = data.data!!
                 }
             }
         }

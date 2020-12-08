@@ -25,4 +25,5 @@
     <string name="alert_message_leave">정말로 채팅방을 나갈까요?</string>
     <string name="button_yes">예</string>
     <string name="button_no">아니오</string>
+    <string name="menu_file">파일 전송</string>
 </resources>

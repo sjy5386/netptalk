@@ -11,6 +11,9 @@
         android:id="@+id/menuImage"
         android:title="@string/menu_image" />
     <item
+        android:id="@+id/menuFile"
+        android:title="@string/menu_file" />
+    <item
         android:id="@+id/menuLeave"
         android:title="@string/menu_leave" />
 </menu>
