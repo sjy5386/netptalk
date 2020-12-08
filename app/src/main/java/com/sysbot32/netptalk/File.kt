@@ -1,6 +1,9 @@
 package com.sysbot32.netptalk
 
+import android.content.Context
+import android.net.Uri
 import android.os.Environment
+import android.provider.DocumentsContract
 import android.util.Base64
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -14,6 +17,11 @@ data class ChatFile(val filename: String, val data: ByteArray) {
     constructor(file: File) : this(
         file.name,
         compress(readFile(file))
+    )
+
+    constructor(context: Context, uri: Uri) : this(
+        getFilenameFromUri(uri),
+        compress(readFile(context, uri))
     )
 
     constructor(jsonObject: JSONObject) : this(
@@ -55,6 +63,16 @@ fun readFile(file: File): ByteArray {
     fileInputStream.close()
     return buf
 }
+
+fun readFile(context: Context, uri: Uri): ByteArray {
+    val inputStream = context.contentResolver.openInputStream(uri)
+    val buf: ByteArray = ByteArray(inputStream!!.available())
+    inputStream.read(buf)
+    inputStream.close()
+    return buf
+}
+
+fun getFilenameFromUri(uri: Uri): String = uri.path!!.split(":")[1].split("/").last()
 
 fun writeFile(file: File, data: ByteArray) {
     val fileOutputStream = FileOutputStream(file)

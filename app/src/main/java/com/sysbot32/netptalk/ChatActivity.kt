@@ -151,6 +151,9 @@ class ChatActivity : AppCompatActivity() {
                 }
                 REQUEST_CODE_FILE -> {
                     val uri = data.data!!
+                    Thread() {
+                        chatClient?.sendFile(chatRoom, ChatFile(this, uri))
+                    }.start()
                 }
             }
         }
