@@ -11,6 +11,11 @@ import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
 data class ChatFile(val filename: String, val data: ByteArray) {
+    constructor(file: File) : this(
+        file.name,
+        compress(readFile(file))
+    )
+
     constructor(jsonObject: JSONObject) : this(
         jsonObject.getString("filename"),
         Base64.decode(jsonObject.getString("data"), 0)
@@ -19,6 +24,10 @@ data class ChatFile(val filename: String, val data: ByteArray) {
     fun toJSONObject(): JSONObject = JSONObject()
         .put("filename", filename)
         .put("data", Base64.encodeToString(data, 0))
+
+    fun write(file: File) {
+        writeFile(file, decompress(data))
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
