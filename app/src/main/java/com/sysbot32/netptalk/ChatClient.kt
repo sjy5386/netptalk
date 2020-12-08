@@ -2,6 +2,8 @@ package com.sysbot32.netptalk
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -28,9 +30,21 @@ class ChatClient(client: Client) {
         executorService.shutdownNow()
     }
 
+    fun read(): String? {
+        val data = client.read()
+        return if (data != null)
+            String(data.array(), StandardCharsets.UTF_8)
+        else
+            null
+    }
+
+    fun write(str: String) {
+        client.write(ByteBuffer.wrap(str.toByteArray(StandardCharsets.UTF_8)))
+    }
+
     private fun reading() {
         while (true) {
-            val received: String = client.read()
+            val received: String = read() ?: break
             println(received)
             val jsonObject = JSONObject(received)
             when (jsonObject.getString("type")) {
@@ -69,7 +83,7 @@ class ChatClient(client: Client) {
 
     fun login(username: String) {
         this.username = username
-        client.write(
+        write(
             JSONObject()
                 .put("type", "login")
                 .put("username", username)
@@ -78,7 +92,7 @@ class ChatClient(client: Client) {
     }
 
     fun logout() {
-        client.write(
+        write(
             JSONObject()
                 .put("type", "logout")
                 .put("username", username)
@@ -87,7 +101,7 @@ class ChatClient(client: Client) {
     }
 
     fun sendMessage(chatType: String, content: String, chatRoom: String) {
-        client.write(
+        write(
             JSONObject()
                 .put("type", "chat")
                 .put("username", username)
@@ -100,7 +114,7 @@ class ChatClient(client: Client) {
     }
 
     fun addChatRoom(title: String) {
-        client.write(
+        write(
             JSONObject()
                 .put("type", "chatRoom")
                 .put("action", "add")
@@ -112,7 +126,7 @@ class ChatClient(client: Client) {
     }
 
     fun inviteToChatRoom(chatRoom: String, invitee: String) {
-        client.write(
+        write(
             JSONObject()
                 .put("type", "chatRoom")
                 .put("action", "invite")
@@ -125,7 +139,7 @@ class ChatClient(client: Client) {
     }
 
     fun leaveChatRoom(chatRoom: String) {
-        client.write(
+        write(
             JSONObject()
                 .put("type", "chatRoom")
                 .put("action", "leave")
