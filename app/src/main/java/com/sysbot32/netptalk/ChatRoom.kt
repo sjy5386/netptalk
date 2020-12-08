@@ -6,10 +6,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sysbot32.netptalk.databinding.ItemChatRoomBinding
+import org.json.JSONArray
+import org.json.JSONObject
 
 val chatRooms: MutableList<ChatRoom> = mutableListOf()
 
-data class ChatRoom(val title: String)
+data class ChatRoom(val title: String) {
+    fun toJSONObject(): JSONObject {
+        val jsonArray = JSONArray()
+        getChatMessages(title).forEach {
+            jsonArray.put(it.toJSONObject())
+        }
+        return JSONObject()
+            .put("title", title)
+            .put("chatMessages", jsonArray)
+    }
+}
 
 class ChatRoomViewHolder(val binding: ItemChatRoomBinding) :
     RecyclerView.ViewHolder(binding.root) {
