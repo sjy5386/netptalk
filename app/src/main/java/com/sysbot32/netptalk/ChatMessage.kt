@@ -26,6 +26,13 @@ data class ChatMessage(
         jsonObject.getString("chatRoom"),
         jsonObject.getLong("timestamp")
     )
+
+    fun toJSONObject(): JSONObject = JSONObject()
+        .put("username", username)
+        .put("chatType", chatType)
+        .put("content", content)
+        .put("chatRoom", chatRoom)
+        .put("timestamp", timestamp)
 }
 
 class ChatMessageViewHolder(val binding: ItemChatMessageBinding) :
