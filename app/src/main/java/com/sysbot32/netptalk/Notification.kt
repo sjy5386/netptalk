@@ -8,7 +8,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
-fun createNotificationChannel(channelId: String) {
+fun createNotificationChannel(context: Context, channelId: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val channel: NotificationChannel = NotificationChannel(
             channelId,
@@ -16,14 +16,14 @@ fun createNotificationChannel(channelId: String) {
             NotificationManager.IMPORTANCE_DEFAULT
         )
         val notificationManager: NotificationManager =
-            mainActivity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 }
 
-fun notifyChatMessage(chatMessage: ChatMessage) {
+fun notifyChatMessage(context: Context, chatMessage: ChatMessage) {
     val builder: NotificationCompat.Builder =
-        NotificationCompat.Builder(mainActivity, "default")
+        NotificationCompat.Builder(context, "default")
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(chatMessage.username)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -35,7 +35,7 @@ fun notifyChatMessage(chatMessage: ChatMessage) {
             val emoticon = chatMessage.content.toInt()
             builder.setStyle(
                 NotificationCompat.BigPictureStyle()
-                    .bigPicture(BitmapFactory.decodeResource(mainActivity.resources, emoticon))
+                    .bigPicture(BitmapFactory.decodeResource(context.resources, emoticon))
                     .bigLargeIcon(null)
             ).setContentText(mainActivity.getString(R.string.notification_text_emoticon))
         }
@@ -48,5 +48,5 @@ fun notifyChatMessage(chatMessage: ChatMessage) {
             ).setContentText(mainActivity.getString(R.string.notification_text_image))
         }
     }
-    NotificationManagerCompat.from(mainActivity).notify(0, builder.build())
+    NotificationManagerCompat.from(context).notify(0, builder.build())
 }

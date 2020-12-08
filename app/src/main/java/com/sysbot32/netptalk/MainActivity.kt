@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 }.create().show()
         }
 
-        createNotificationChannel("default")
+        createNotificationChannel(this, "default")
         load(this)
     }
 

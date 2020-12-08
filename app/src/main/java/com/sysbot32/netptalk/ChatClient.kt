@@ -64,7 +64,7 @@ class ChatClient(client: Client) {
                         }
                     }
                     if ((!chatActivity.status) || (chatActivity.chatRoom != chatMessage.chatRoom)) {
-                        notifyChatMessage(chatMessage)
+                        notifyChatMessage(mainActivity, chatMessage)
                     }
                 }
                 "chatRoom" -> {
