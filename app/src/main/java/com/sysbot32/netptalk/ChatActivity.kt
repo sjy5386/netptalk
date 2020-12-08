@@ -63,6 +63,12 @@ class ChatActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         status = false
+        save(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        save(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

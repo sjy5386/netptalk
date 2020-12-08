@@ -71,6 +71,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         createNotificationChannel("default")
+        load(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        save(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        save(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
