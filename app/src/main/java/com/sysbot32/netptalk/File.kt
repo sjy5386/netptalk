@@ -3,7 +3,6 @@ package com.sysbot32.netptalk
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
-import android.provider.DocumentsContract
 import android.util.Base64
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream

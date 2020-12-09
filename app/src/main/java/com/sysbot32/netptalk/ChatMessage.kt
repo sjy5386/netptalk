@@ -86,6 +86,21 @@ class ChatMessageAdapter(
                 holder.binding.textSystem.text = chatMessage.content
                 holder.binding.textSystem.visibility = View.VISIBLE
             }
+            "file" -> {
+                if (chatMessage.username != username) {
+                    holder.binding.textMessage.text = chatMessage.content
+                    holder.binding.textMessage.setOnClickListener {
+                        chatClient?.requestFile(chatMessage.content)
+                    }
+                    holder.binding.textMessage.visibility = View.VISIBLE
+                } else {
+                    holder.binding.textMyMessage.text = chatMessage.content
+                    holder.binding.textMyMessage.setOnClickListener {
+                        chatClient?.requestFile(chatMessage.content)
+                    }
+                    holder.binding.textMyMessage.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
