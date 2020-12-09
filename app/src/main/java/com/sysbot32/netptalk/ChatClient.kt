@@ -2,6 +2,7 @@ package com.sysbot32.netptalk
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.File
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.ExecutorService
@@ -75,6 +76,17 @@ class ChatClient(client: Client) {
                                 mainActivity.chatRoomAdapter.notifyItemInserted(0)
                             }
                         }
+                    }
+                }
+                "file" -> {
+                    if (isExternalStorageWritable()) {
+                        val chatFile = ChatFile(jsonObject)
+                        chatFile.write(
+                            File(
+                                mainActivity.getExternalFilesDir(null),
+                                chatFile.filename
+                            )
+                        )
                     }
                 }
             }
@@ -156,6 +168,16 @@ class ChatClient(client: Client) {
                 .put("type", "file")
                 .put("username", username)
                 .put("chatRoom", chatRoom)
+                .put("timestamp", System.currentTimeMillis())
+                .toString()
+        )
+    }
+
+    fun requestFile(filename: String) {
+        write(
+            JSONObject()
+                .put("type", "requestFile")
+                .put("filename", filename)
                 .put("timestamp", System.currentTimeMillis())
                 .toString()
         )
