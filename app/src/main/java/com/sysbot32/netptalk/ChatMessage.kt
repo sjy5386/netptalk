@@ -73,6 +73,10 @@ class ChatMessageAdapter(
             "emoticon" -> {
                 val emoticon = chatMessage.content.toInt()
                 if (emoticons.contains(emoticon)) {
+                    if (chatMessage.username == username) {
+                        holder.binding.textUsername.visibility = View.INVISIBLE
+                        holder.binding.imageProfile.visibility = View.INVISIBLE
+                    }
                     holder.binding.imageMessage.setImageResource(emoticon)
                     holder.binding.imageMessage.visibility = View.VISIBLE
                 }
